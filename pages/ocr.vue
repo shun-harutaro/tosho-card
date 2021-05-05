@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <div ref="canvas-container" style="width:100">
-      <h1>a</h1>
-      <canvas ref="canvas"></canvas>
+    <div ref="canvas-container">
+      <canvas ref="canvas" style="width:100%;margin:0 auto;"></canvas>
     </div>
     <div class="text-center pt-3">
       <div v-if="status=='play'">
@@ -70,7 +69,7 @@ export default {
     },
     render() {
       if(this.video.readyState === this.video.HAVE_ENOUGH_DATA){
-        this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+        this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height,);
 
       }
       requestAnimationFrame(this.render);
