@@ -1,42 +1,55 @@
+import os
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
+from fake_useragent import UserAgent
+from flask import escape
 
-# x. Chrome の起動オプションを設定する
-options = Options()
-options.add_argument('--headless')
+def handler(request):
+    chrome_options = webdriver.ChromeOptions()
 
-# seleniumサーバーに接続
-print('connectiong to remote browser...')
-driver = webdriver.Remote(
-    command_executor='http://localhost:4444/wd/hub',
-    desired_capabilities=options.to_capabilities(),
-    options=options,
-)
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--window-size=1280x1696')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--hide-scrollbars')
+    chrome_options.add_argument('--enable-logging')
+    chrome_options.add_argument('--log-level=0')
+    chrome_options.add_argument('--v=99')
+    chrome_options.add_argument('--single-process')
+    chrome_options.add_argument('--ignore-certificate-errors')
+    chrome_options.add_argument('user-agent='+UserAgent().random)
 
-# 1. Qiita の Chanmoro のプロフィールページにアクセスする
-driver.get('https://www.toshocardnext.ne.jp/tosho/pc/CardUserLoginPage/open.do')
-print(driver.current_url)
+    request_json = request.get_json(silent=True)
+    request_args = request.args
 
-# ID番号のフォームに入力
-id_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[3]/td/input')
-id_form.send_keys('1119490082825296')
+    chrome_options.binary_location = os.getcwd() + "/headless-chromium"    
+    driver = webdriver.Chrome(os.getcwd() + "/chromedriver",chrome_options=chrome_options)
 
-# pinのフォームに入力
-pin_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[5]/td/input')
-pin_form.send_keys('3664')
+    # 図書カード残額確認のページにアクセスする
+    driver.get('https://www.toshocardnext.ne.jp/tosho/pc/CardUserLoginPage/open.do')
+    print(driver.current_url)
 
-# ログインボタンをクリック
-login_btn = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[3]/tbody/tr[2]/td[1]/input')
-login_btn.click()
+    # ID番号のフォームに入力
+    id_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[3]/td/input')
+    id_form.send_keys(request_json['id'])
 
-# 残額を出力
-balance = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[3]/li[2]/p')
-print(balance[0].text)
+    # pinのフォームに入力
+    pin_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[5]/td/input')
+    pin_form.send_keys(request_json['pin'])
+    
+    # ログインボタンをクリック
+    login_btn = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[3]/tbody/tr[2]/td[1]/input')
+    login_btn.click()
 
-# 有効期限を出力
-date = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[2]/li[2]/p')
-print(date[0].text)
+    # 残額を出力
+    elements_balance = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[3]/li[2]/p')
+    balance = elements_balance[0].text
+    print(balance)
 
-driver.quit()
+    # 有効期限を出力
+    elements_date = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[2]/li[2]/p')
+    date = elements_date[0].text
+    print(date)
+
+    driver.quit()
+
+    return 
