@@ -1,6 +1,7 @@
 import os
 from selenium import webdriver
 from fake_useragent import UserAgent
+from flask import escape
 
 def handler(request):
     chrome_options = webdriver.ChromeOptions()
@@ -51,4 +52,4 @@ def handler(request):
 
     driver.quit()
 
-    return balance,date
+    return 
