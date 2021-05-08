@@ -17,6 +17,9 @@ def handler(request):
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument('user-agent='+UserAgent().random)
 
+    request_json = request.get_json(silent=True)
+    request_args = request.args
+
     chrome_options.binary_location = os.getcwd() + "/headless-chromium"    
     driver = webdriver.Chrome(os.getcwd() + "/chromedriver",chrome_options=chrome_options)
 
@@ -26,24 +29,26 @@ def handler(request):
 
     # ID番号のフォームに入力
     id_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[3]/td/input')
-    id_form.send_keys('1119490082825296')
+    id_form.send_keys(request_json['id'])
 
     # pinのフォームに入力
     pin_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[5]/td/input')
-    pin_form.send_keys('3664')
+    pin_form.send_keys(request_json['pin'])
     
     # ログインボタンをクリック
     login_btn = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[3]/tbody/tr[2]/td[1]/input')
     login_btn.click()
 
     # 残額を出力
-    balance = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[3]/li[2]/p')
-    print(balance[0].text)
+    elements_balance = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[3]/li[2]/p')
+    balance = elements_balance[0].text
+    print(balance)
 
     # 有効期限を出力
-    date = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[2]/li[2]/p')
-    print(date[0].text)
+    elements_date = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[2]/li[2]/p')
+    date = elements_date[0].text
+    print(date)
 
     driver.quit()
 
-    return balance
+    return balance,date
