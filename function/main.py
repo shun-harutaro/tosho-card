@@ -1,11 +1,14 @@
 import os
 from selenium import webdriver
 from fake_useragent import UserAgent
-from flask import escape
+from flask import Flask, request, jsonify
+
+
+app = Flask(__name__)
+app.config["JSON_AS_ASCII"] = False
 
 def handler(request):
     chrome_options = webdriver.ChromeOptions()
-
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--window-size=1280x1696')
@@ -52,4 +55,11 @@ def handler(request):
 
     driver.quit()
 
-    return 
+    return jsonify({"balance":balance, "date":date})
+
+@app.route('/')
+def index():
+    return handler(request)
+
+if __name__ == "__main__":
+    app.run(port=8000)
