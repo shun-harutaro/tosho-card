@@ -38,6 +38,9 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
+  proxy: {
+    '/api/': { target: "https://us-central1-tosho-card.cloudfunctions.net/", pathRewrite:{'^/api/': ''}}
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
