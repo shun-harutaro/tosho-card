@@ -2,9 +2,11 @@ import os
 from selenium import webdriver
 from fake_useragent import UserAgent
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 app.config["JSON_AS_ASCII"] = False
 
 def handler(request):
