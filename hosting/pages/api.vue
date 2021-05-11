@@ -15,6 +15,11 @@ export default {
       ('https://us-central1-tosho-card.cloudfunctions.net/handler',{
         id: '1119490082825296',
         pin: '3664'
+      }).then(res => {
+        console.log('成功')
+      })
+      .catch((err) => {
+        console.log(err) //失敗
       });
     return { posts: response };
   } 
