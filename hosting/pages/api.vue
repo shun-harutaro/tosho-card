@@ -13,8 +13,8 @@ export default {
   async asyncData(context) {
     const response = await context.$axios.$post
       ('https://us-central1-tosho-card.cloudfunctions.net/handler',{
-        id: '1119490082825296',
-        pin: '3664'
+        "id": "1119490082825296",
+        "pin": "3664"
       }).then(res => {
         console.log('成功')
       })
