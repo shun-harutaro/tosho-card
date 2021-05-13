@@ -2,41 +2,58 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from flask import Flask, request, jsonify
 
-# x. Chrome の起動オプションを設定する
-options = Options()
-options.add_argument('--headless')
+app = Flask(__name__)
+app.config["JSON_AS_ASCII"] = False
 
-# seleniumサーバーに接続
-print('connectiong to remote browser...')
-driver = webdriver.Remote(
-    command_executor='http://localhost:4444/wd/hub',
-    desired_capabilities=options.to_capabilities(),
-    options=options,
-)
+def main(request):
+    # x. Chrome の起動オプションを設定する
+    options = Options()
+    options.add_argument('--headless')
 
-# 1. Qiita の Chanmoro のプロフィールページにアクセスする
-driver.get('https://www.toshocardnext.ne.jp/tosho/pc/CardUserLoginPage/open.do')
-print(driver.current_url)
+    request_json = request.get_json(silent=True)
+    request_args = request.args
 
-# ID番号のフォームに入力
-id_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[3]/td/input')
-id_form.send_keys('1119490082825296')
+    # seleniumサーバーに接続
+    print('connectiong to remote browser...')
+    driver = webdriver.Remote(
+        command_executor='http://localhost:4444/wd/hub',
+        desired_capabilities=options.to_capabilities(),
+        options=options,
+    )
 
-# pinのフォームに入力
-pin_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[5]/td/input')
-pin_form.send_keys('3664')
+    # 1. Qiita の Chanmoro のプロフィールページにアクセスする
+    driver.get('https://www.toshocardnext.ne.jp/tosho/pc/CardUserLoginPage/open.do')
+    print(driver.current_url)
 
-# ログインボタンをクリック
-login_btn = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[3]/tbody/tr[2]/td[1]/input')
-login_btn.click()
+    # ID番号のフォームに入力
+    id_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[3]/td/input')
+    id_form.send_keys('1119490082825296')
 
-# 残額を出力
-balance = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[3]/li[2]/p')
-print(balance[0].text)
+    # pinのフォームに入力
+    pin_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[5]/td/input')
+    pin_form.send_keys('3664')
 
-# 有効期限を出力
-date = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[2]/li[2]/p')
-print(date[0].text)
+    # ログインボタンをクリック
+    login_btn = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[3]/tbody/tr[2]/td[1]/input')
+    login_btn.click()
 
-driver.quit()
+    # 残額を出力
+    balance = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[3]/li[2]/p')
+    print(balance[0].text)
+
+    # 有効期限を出力
+    date = driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[2]/tbody/tr/td/div/ul[2]/li[2]/p')
+    print(date[0].text)
+
+    driver.quit()
+
+    return 
+
+@app.route('/')
+def index():
+    return main(request)
+
+if __name__ == "__main__":
+    app.run(port=8000)
