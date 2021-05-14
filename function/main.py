@@ -1,13 +1,12 @@
-#import os
-#from selenium import webdriver
-#from fake_useragent import UserAgent
+import os
+from selenium import webdriver
+from fake_useragent import UserAgent
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
-@app.route('/', methods=["POST"])
-def main(request):
+def handler(request):
     # Set CORS headers for the preflight request
     # Allows POST requests from any origin with the Content-Type
     # header and caches preflight response for an 3600s
@@ -18,11 +17,6 @@ def main(request):
         'Access-Control-Max_Age': '3600'
     }
 
-    print(request)
-
-    return 0
-
-def handler():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
@@ -48,11 +42,11 @@ def handler():
 
     # ID番号のフォームに入力
     id_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[3]/td/input')
-    id_form.send_keys(request_json["id"])
+    id_form.send_keys(request_json['id'])
 
     # pinのフォームに入力
     pin_form = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[1]/tbody/tr/td[4]/table/tbody/tr[5]/td/input')
-    pin_form.send_keys(request_json["pin"])
+    pin_form.send_keys(request_json['pin'])
     
     # ログインボタンをクリック
     login_btn = driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table[2]/tbody/tr[1]/td/table[3]/tbody/tr[2]/td[1]/input')
@@ -71,6 +65,10 @@ def handler():
     driver.quit()
 
     return (jsonify({"balance":balance, "date":date}), 200, headers)
+
+@app.route('/')
+def index():
+    return handler(request)
 
 if __name__ == "__main__":
     app.run(port=8000)
