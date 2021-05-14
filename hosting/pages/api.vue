@@ -10,17 +10,15 @@
 
 <script>
 export default {
-  async asyncData(context) {
-    const response = await context.$axios.$post
-      ('https://us-central1-tosho-card.cloudfunctions.net/handler',{
-        "id": "1119490082825296",
-        "pin": "3664"
-      }).then(res => {
-        console.log('成功')
-      })
-      .catch((err) => {
+  async asyncData({ $axios }) {
+    const response = await $axios.$post
+      ('https://us-central1-tosho-card.cloudfunctions.net/main',{
+        id: "1119490082825296",
+        pin: "3664"
+      }).catch(err => {
         console.log(err) //失敗
       });
+      console.log(response)
     return { posts: response };
   } 
 }
