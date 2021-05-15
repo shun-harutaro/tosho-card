@@ -39,7 +39,7 @@ def handler(request):
     chrome_options.add_argument('user-agent='+UserAgent().random)
 
     request_json = request.get_json(silent=True)
-    request_args = request.args
+    #request_args = request.args # for "GET"
 
     chrome_options.binary_location = os.getcwd() + "/headless-chromium"    
     driver = webdriver.Chrome(os.getcwd() + "/chromedriver",chrome_options=chrome_options)
