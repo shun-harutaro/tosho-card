@@ -8,13 +8,21 @@ app.config["JSON_AS_ASCII"] = False
 
 def handler(request):
     # Set CORS headers for the preflight request
-    # Allows POST requests from any origin with the Content-Type
-    # header and caches preflight response for an 3600s
+    if request.method == "OPTIONS":
+        # Allows POST requests from any origin with the Content-Type
+        # header and caches preflight response for an 3600s
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max_Age': '3600'
+        }
+
+        return ('allow CORS', 204, headers)
+
+    # Set CORS headers for the main request
     headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Max_Age': '3600'
+        'Access-Control-Allow-Origin': '*'
     }
 
     chrome_options = webdriver.ChromeOptions()
