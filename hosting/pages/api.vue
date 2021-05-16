@@ -1,27 +1,22 @@
 <template>
   <div>
-    <ul>
-      <li v-for="post in posts" :key="post.id">
-        {{ post }}
-      </li>
-    </ul>
+    {{ posts.balance }}
+    {{ posts.date }}
   </div>
 </template>
 
 <script>
 export default {
-  async asyncData(context) {
-    const response = await context.$axios.$post
+  async asyncData({$axios}) {
+    const posts = await $axios.$post //"$post"にするとresponse.data
       ('https://us-central1-tosho-card.cloudfunctions.net/handler',{
         "id": "1119490082825296",
         "pin": "3664"
-      }).then(res => {
-        console.log('成功')
-      })
-      .catch((err) => {
+      }).catch((err) => {
         console.log(err) //失敗
       });
-    return { posts: response };
+    console.log(posts)
+    return { posts } //{posts : posts}の短縮
   } 
 }
 </script>
