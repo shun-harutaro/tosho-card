@@ -50,6 +50,10 @@ export default {
       }).then(stream => {
         this.canvas = this.$refs.canvas;
         this.context = this.canvas.getContext('2d');
+        //this.context.fillStyle = "rgb(0, 0, 255)";
+        //this.context.fillRect(20,20,50,50);
+        //this.context.globalCompositeOperation = "destination-in";
+
         this.video = document.createElement('video');
         this.video.addEventListener('loadedmetadata', () => { // メタデータが取得できるようになったら実行
           const canvasContainer = this.$refs['canvas-container'];
@@ -70,9 +74,29 @@ export default {
     render() {
       if(this.video.readyState === this.video.HAVE_ENOUGH_DATA){
         this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height,);
-
+        this.guide();
+        //this.context.fillStyle = "black";
+        //this.context.fillRect(0,0,this.canvas.width, this.canvas.height);
+        //this.context.globalAlpha = 0.5
+        //this.context.fillStyle = "white"
+        //this.context.fillRect(0,0,50, 50);
+        //this.context.globalAlpha = 0;
       }
       requestAnimationFrame(this.render);
+    },
+    guide() {
+      this.context.fillStyle = "black";
+      this.context.fillRect(0,0,this.canvas.width/4, this.canvas.height);
+      this.context.globalAlpha = 0.5
+      this.context.fillStyle = "black";
+      this.context.fillRect(this.canvas.width/4*3,0,this.canvas.width, this.canvas.height);
+      this.context.globalAlpha = 0.5
+      this.context.fillStyle = "black";
+      this.context.fillRect(this.canvas.width/4,0,this.canvas.width/4*2, this.canvas.height/11*5);
+      this.context.globalAlpha = 0.5
+      this.context.fillStyle = "black";
+      this.context.fillRect(this.canvas.width/4,this.canvas.height/11*6,this.canvas.width/4*2, this.canvas.height);
+      this.context.globalAlpha = 0.5
     },
     runOcr() { //スナップショットからテキストを抽出
       const Tesseract = require('tesseract.js')
