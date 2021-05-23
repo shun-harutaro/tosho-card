@@ -26,10 +26,15 @@
     <form class="form" v-on:submit.prevent="onSubmit">
       <ul>
         <li>
-          <input type="text" name="id" id="id">
+          <span>ID : </span>
+          <input type="text" name="id" id="" v-model="card_id">
         </li>
         <li>
-          <input type="text" name="pin" id="" maxlength="4">
+          <span>PIN : </span>
+          <input type="text" name="pin" id="" maxlength="4" v-model="pin">
+        </li>
+        <li>
+          {{ Validation.loginReult }}
         </li>
         <li>
           <button>
@@ -49,7 +54,14 @@ export default {
       canvas: null,
       context: null,
       dataUrl: '',
-      status: 'none'
+      status: 'none',
+      loginForm: {
+        card_id: "",
+        pin: ""
+      },
+      Validation: {
+        loginResult: ""
+      }
     }
   },
   
@@ -122,6 +134,7 @@ export default {
         }
       }).then(result => {
         document.getElementById("id").value = result.data.text;
+        this.Validation.loginResult = "success";
       })
       .catch(error => console.log(error))
       .finally(() => {
