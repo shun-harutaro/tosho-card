@@ -23,6 +23,21 @@
         読み取り中です...
       </div>
     </div>
+    <form class="form" v-on:submit.prevent="onSubmit">
+      <ul>
+        <li>
+          <input type="text" name="id" id="id">
+        </li>
+        <li>
+          <input type="text" name="pin" id="" maxlength="4">
+        </li>
+        <li>
+          <button>
+            Login
+          </button>
+        </li>
+      </ul>
+    </form>
   </div>
 </template>
 
@@ -106,7 +121,7 @@ export default {
           console.log(log);
         }
       }).then(result => {
-        alert(result.data.text);
+        document.getElementById("id").value = result.data.text;
       })
       .catch(error => console.log(error))
       .finally(() => {
