@@ -23,6 +23,26 @@
         読み取り中です...
       </div>
     </div>
+    <form class="form" v-on:submit.prevent="checkForm">
+      <ul>
+        <li>
+          <span>ID : </span>
+          <input type="text" v-model="loginForm.card_id">
+        </li>
+        <li>
+          <span>PIN : </span>
+          <input type="text" maxlength="4" v-model="loginForm.pin">
+        </li>
+        <li>
+          {{ Validation.loginReult }}
+        </li>
+        <li>
+          <button>
+            Login
+          </button>
+        </li>
+      </ul>
+    </form>
   </div>
 </template>
 
@@ -30,11 +50,18 @@
 export default {
   data() {
     return {
+      loginForm: {
+        card_id: '',
+        pin: ''
+      },
+      Validation: {
+        loginResult: ''
+      },
       video: null,
       canvas: null,
       context: null,
       dataUrl: '',
-      status: 'none'
+      status: 'none',
     }
   },
   
@@ -50,9 +77,6 @@ export default {
       }).then(stream => {
         this.canvas = this.$refs.canvas;
         this.context = this.canvas.getContext('2d');
-        //this.context.fillStyle = "rgb(0, 0, 255)";
-        //this.context.fillRect(20,20,50,50);
-        //this.context.globalCompositeOperation = "destination-in";
 
         this.video = document.createElement('video');
         this.video.addEventListener('loadedmetadata', () => { // メタデータが取得できるようになったら実行
@@ -75,12 +99,6 @@ export default {
       if(this.video.readyState === this.video.HAVE_ENOUGH_DATA){
         this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height,);
         this.guide();
-        //this.context.fillStyle = "black";
-        //this.context.fillRect(0,0,this.canvas.width, this.canvas.height);
-        //this.context.globalAlpha = 0.5
-        //this.context.fillStyle = "white"
-        //this.context.fillRect(0,0,50, 50);
-        //this.context.globalAlpha = 0;
       }
       requestAnimationFrame(this.render);
     },
@@ -106,7 +124,7 @@ export default {
           console.log(log);
         }
       }).then(result => {
-        alert(result.data.text);
+        this.loginForm.card_id = result.data.text;
       })
       .catch(error => console.log(error))
       .finally(() => {
@@ -124,7 +142,7 @@ export default {
     takeSnapshot() {
       this.pauseVideo();
       this.dataUrl = this.canvas.toDataURL();
-    }
+    },
   },
 
   mounted() {
