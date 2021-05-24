@@ -124,8 +124,7 @@ export default {
           console.log(log);
         }
       }).then(result => {
-        document.getElementById("id").value = result.data.text;
-        this.Validation.loginResult = "success";
+        this.loginForm.card_id = result.data.text;
       })
       .catch(error => console.log(error))
       .finally(() => {
