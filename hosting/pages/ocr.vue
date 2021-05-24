@@ -23,16 +23,21 @@
         読み取り中です...
       </div>
     </div>
-    <form class="form" v-on:submit.prevent="onSubmit">
+    <form class="form" v-on:submit.prevent="checkForm">
       <ul>
         <li>
-          <input type="text" name="id" id="id">
+          <span>ID : </span>
+          <input type="text" v-model="loginForm.card_id">
         </li>
         <li>
-          <input type="text" name="pin" id="" maxlength="4">
+          <span>PIN : </span>
+          <input type="text" maxlength="4" v-model="loginForm.pin">
         </li>
         <li>
-          <button>
+          {{ Validation.loginReult }}
+        </li>
+        <li>
+          <button v-on:click="checkForm">
             Login
           </button>
         </li>
@@ -45,11 +50,18 @@
 export default {
   data() {
     return {
+      loginForm: {
+        card_id: '',
+        pin: ''
+      },
+      Validation: {
+        loginResult: ''
+      },
       video: null,
       canvas: null,
       context: null,
       dataUrl: '',
-      status: 'none'
+      status: 'none',
     }
   },
   
@@ -122,6 +134,7 @@ export default {
         }
       }).then(result => {
         document.getElementById("id").value = result.data.text;
+        this.Validation.loginResult = "success";
       })
       .catch(error => console.log(error))
       .finally(() => {
@@ -139,6 +152,9 @@ export default {
     takeSnapshot() {
       this.pauseVideo();
       this.dataUrl = this.canvas.toDataURL();
+    },
+    checkForm(){
+      this.Validation.loginResult = "a"
     }
   },
 
