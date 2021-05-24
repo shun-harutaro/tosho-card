@@ -37,7 +37,7 @@
           {{ Validation.loginReult }}
         </li>
         <li>
-          <button v-on:click="checkForm">
+          <button>
             Login
           </button>
         </li>
@@ -77,9 +77,6 @@ export default {
       }).then(stream => {
         this.canvas = this.$refs.canvas;
         this.context = this.canvas.getContext('2d');
-        //this.context.fillStyle = "rgb(0, 0, 255)";
-        //this.context.fillRect(20,20,50,50);
-        //this.context.globalCompositeOperation = "destination-in";
 
         this.video = document.createElement('video');
         this.video.addEventListener('loadedmetadata', () => { // メタデータが取得できるようになったら実行
@@ -102,12 +99,6 @@ export default {
       if(this.video.readyState === this.video.HAVE_ENOUGH_DATA){
         this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height,);
         this.guide();
-        //this.context.fillStyle = "black";
-        //this.context.fillRect(0,0,this.canvas.width, this.canvas.height);
-        //this.context.globalAlpha = 0.5
-        //this.context.fillStyle = "white"
-        //this.context.fillRect(0,0,50, 50);
-        //this.context.globalAlpha = 0;
       }
       requestAnimationFrame(this.render);
     },
@@ -153,9 +144,6 @@ export default {
       this.pauseVideo();
       this.dataUrl = this.canvas.toDataURL();
     },
-    checkForm(){
-      this.Validation.loginResult = "a"
-    }
   },
 
   mounted() {
