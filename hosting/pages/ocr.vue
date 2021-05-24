@@ -23,7 +23,7 @@
         読み取り中です...
       </div>
     </div>
-    <form class="form" v-on:submit.prevent="onSubmit">
+    <form class="form" >
       <ul>
         <li>
           <input type="text" name="id" id="id">
@@ -32,7 +32,7 @@
           <input type="text" name="pin" id="" maxlength="4">
         </li>
         <li>
-          <button>
+          <button >
             Login
           </button>
         </li>
