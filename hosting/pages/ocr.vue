@@ -23,7 +23,7 @@
         読み取り中です...
       </div>
     </div>
-    <form class="form" v-on:submit.prevent="checkForm">
+    <form class="form" v-on:submit.prevent="getCardData">
       <ul>
         <li>
           <span>ID : </span>
@@ -34,15 +34,16 @@
           <input type="text" maxlength="4" v-model="loginForm.pin">
         </li>
         <li>
-          {{ Validation.loginReult }}
-        </li>
-        <li>
           <button>
-            Login
+            調べる！
           </button>
         </li>
       </ul>
     </form>
+    <div>
+      <p>残額 : {{ cardData.balance }}</p>
+      <p>有効期限 : {{ cardData.date }}</p>
+    </div>
   </div>
 </template>
 
@@ -57,6 +58,7 @@ export default {
       Validation: {
         loginResult: ''
       },
+      cardData: {},
       video: null,
       canvas: null,
       context: null,
@@ -105,16 +107,16 @@ export default {
     guide() {
       this.context.fillStyle = "black";
       this.context.fillRect(0,0,this.canvas.width/4, this.canvas.height);
-      this.context.globalAlpha = 0.5
+      this.context.globalAlpha = 0.4
       this.context.fillStyle = "black";
       this.context.fillRect(this.canvas.width/4*3,0,this.canvas.width, this.canvas.height);
-      this.context.globalAlpha = 0.5
+      this.context.globalAlpha = 0.4
       this.context.fillStyle = "black";
       this.context.fillRect(this.canvas.width/4,0,this.canvas.width/4*2, this.canvas.height/11*5);
-      this.context.globalAlpha = 0.5
+      this.context.globalAlpha = 0.4
       this.context.fillStyle = "black";
       this.context.fillRect(this.canvas.width/4,this.canvas.height/11*6,this.canvas.width/4*2, this.canvas.height);
-      this.context.globalAlpha = 0.5
+      this.context.globalAlpha = 0.4
     },
     runOcr() { //スナップショットからテキストを抽出
       const Tesseract = require('tesseract.js')
@@ -143,6 +145,19 @@ export default {
       this.pauseVideo();
       this.dataUrl = this.canvas.toDataURL();
     },
+    async getCardData() {
+      console.log('a')
+      const carddata = await this.$axios.$post(
+        'https://us-central1-tosho-card.cloudfunctions.net/handler',{
+        "id": this.loginForm.card_id,
+        "pin": this.loginForm.pin
+      }).then((res) => {
+        this.cardData = res
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
+      });
+    }
   },
 
   mounted() {
