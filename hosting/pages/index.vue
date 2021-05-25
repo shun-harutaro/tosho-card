@@ -27,7 +27,8 @@
       <ul>
         <li>
           <span>ID : </span>
-          <input type="text" v-model="loginForm.card_id">
+          <input type="text" v-model="loginForm.card_id" style="width:80%">
+          <p>▲ スキャン精度が低いので、冗長な文字列、スペースを除去してください。</p>
         </li>
         <li>
           <span>PIN : </span>
@@ -41,6 +42,7 @@
       </ul>
     </form>
     <div>
+      <p>{{ Validation.loginResult }}</p>
       <p>残額 : {{ cardData.balance }}</p>
       <p>有効期限 : {{ cardData.date }}</p>
     </div>
@@ -107,16 +109,16 @@ export default {
     guide() {
       this.context.fillStyle = "black";
       this.context.fillRect(0,0,this.canvas.width/4, this.canvas.height);
-      this.context.globalAlpha = 0.4
+      this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
       this.context.fillRect(this.canvas.width/4*3,0,this.canvas.width, this.canvas.height);
-      this.context.globalAlpha = 0.4
+      this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
       this.context.fillRect(this.canvas.width/4,0,this.canvas.width/4*2, this.canvas.height/11*5);
-      this.context.globalAlpha = 0.4
+      this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
       this.context.fillRect(this.canvas.width/4,this.canvas.height/11*6,this.canvas.width/4*2, this.canvas.height);
-      this.context.globalAlpha = 0.4
+      this.context.globalAlpha = 0.8
     },
     runOcr() { //スナップショットからテキストを抽出
       const Tesseract = require('tesseract.js')
@@ -146,16 +148,18 @@ export default {
       this.dataUrl = this.canvas.toDataURL();
     },
     async getCardData() {
-      console.log('a')
+      this.Validation.loginResult = "データ取得中...";
       const carddata = await this.$axios.$post(
         'https://us-central1-tosho-card.cloudfunctions.net/handler',{
         "id": this.loginForm.card_id,
         "pin": this.loginForm.pin
       }).then((res) => {
         this.cardData = res
+        this.Validation.loginResult = ""
         console.log(res)
       }).catch((err) => {
         console.log(err)
+        this.Validation.loginResult = "データ取得失敗";
       });
     }
   },
