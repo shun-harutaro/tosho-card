@@ -147,10 +147,10 @@ export default {
       this.pauseVideo();
       this.dataUrl = this.canvas.toDataURL();
     },
-    async getCardData() {
+    async getCardData({ $config }) {
       this.Validation.loginResult = "データ取得中...";
       const carddata = await this.$axios.$post(
-        'https://us-central1-tosho-card.cloudfunctions.net/handler',{
+        this.$config.baseURL,{
         "id": this.loginForm.card_id,
         "pin": this.loginForm.pin
       }).then((res) => {
