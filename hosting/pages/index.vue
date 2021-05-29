@@ -128,7 +128,10 @@ export default {
           console.log(log);
         }
       }).then(result => {
-        this.loginForm.card_id = result.data.text;
+        const scan_data = result.data.text
+        const num_data = scan_data.replace(/[^0-9]/g, ''); //正規表現によって数字のみ取り出す
+        console.log(num_data)
+        this.loginForm.card_id = num_data
       })
       .catch(error => console.log(error))
       .finally(() => {
