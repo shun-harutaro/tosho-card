@@ -23,7 +23,7 @@
         読み取り中です...
       </div>
     </div>
-    <form class="form" v-on:submit.prevent="getCardData">
+    <form class="form" v-on:submit.prevent="checkForm">
       <ul>
         <li>
           <span>ID : </span>
@@ -150,7 +150,14 @@ export default {
       this.pauseVideo();
       this.dataUrl = this.canvas.toDataURL();
     },
-    async getCardData({ $config }) {
+    checkForm(){
+      if (this.loginForm.card_id.length != 16){
+        this.Validation.loginResult = "IDは16桁です"
+      } else {
+        this.getCardData()
+      }
+    },
+    async getCardData() {
       this.Validation.loginResult = "データ取得中...";
       const carddata = await this.$axios.$post(
         this.$config.baseURL,{
