@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <h1 class="text-3xl font-bold">tosho-card</h1>
     <div ref="canvas-container">
       <canvas ref="canvas" style="width:100%;margin:0 auto;"></canvas>
     </div>
