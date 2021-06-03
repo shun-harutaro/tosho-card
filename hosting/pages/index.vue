@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <h1 class="text-3xl font-bold">tosho-card</h1>
+  <div id="app" class="px-5">
+    <h1 class="text-3xl font-bold p-2">tosho-card</h1>
     <div ref="canvas-container">
       <canvas ref="canvas" style="width:100%;margin:0 auto;"></canvas>
     </div>
@@ -29,7 +29,6 @@
         <li>
           <span>ID : </span>
           <input type="text" v-model="loginForm.card_id" style="width:80%">
-          <p>▲ スキャン精度が低いので、冗長な文字列、スペースを除去してください。</p>
         </li>
         <li>
           <span>PIN : </span>
