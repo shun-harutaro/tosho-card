@@ -2,7 +2,9 @@
   "name": "tosho-card",
   "version": "1.0.0",
   "private": true,
-  "engines": {"node": "12"},
+  "engines": {
+    "node": "12"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
