@@ -2,6 +2,9 @@
   "name": "tosho-card",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "12"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -13,5 +16,9 @@
     "core-js": "^3.9.1",
     "nuxt": "^2.15.4",
     "tesseract.js": "^2.1.4"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^4.1.2",
+    "postcss": "^8.3.0"
   }
 }
