@@ -6,22 +6,16 @@
     </div>
     <div class="text-center pt-3">
       <div v-if="status=='play'">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded" @click="takeSnapshot">
-          スナップショットを取る
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded" @click="runOcr">
+          ID番号を読み取る
         </button>
       </div>
       <!-- pause： スナップショットを撮ったので一次停止 -->
-      <div v-if="status=='pause'">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 mr-1 rounded" @click="runOcr">
-          ID番号を読み取る
-        </button>
+      <div v-if="status=='reading'">
+        <p>読み取り中...</p>
         <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 ml-1 border border-blue-500 hover:border-transparent rounded" @click="playVideo">
          戻る
         </button>
-      </div>
-      <!-- pause： スナップショットをOCRにかけてテキストを取得 -->
-      <div v-if="status=='reading'">
-        読み取り中です...
       </div>
     </div>
     <form class="form" v-on:submit.prevent="checkForm">
@@ -123,6 +117,8 @@ export default {
     runOcr() { //スナップショットからテキストを抽出
       const Tesseract = require('tesseract.js')
       this.status = 'reading';
+      this.pauseVideo();
+      this.dataUrl = this.canvas.toDataURL();
       Tesseract.recognize(this.dataUrl, 'eng', {
         logger: log => {
           console.log(log);
@@ -144,12 +140,12 @@ export default {
     },
     pauseVideo() {
       this.video.pause();
-      this.status = 'pause';
+      //this.status = 'pause';
     },
-    takeSnapshot() {
+    /*takeSnapshot() {
       this.pauseVideo();
       this.dataUrl = this.canvas.toDataURL();
-    },
+    },*/
     checkForm(){
       if (this.loginForm.card_id.length != 16){
         this.Validation.loginResult = "IDは16桁です"
