@@ -18,11 +18,6 @@
         </button>
       </div>
     </div>
-    
-    <modal>
-      
-    </modal>
-
     <form class="form" v-on:submit.prevent="checkForm">
       <ul>
         <li>
