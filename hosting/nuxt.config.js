@@ -30,16 +30,16 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/tailwindcss'],
+  buildModules: [
+    // https://go.nuxtjs.dev/tailwindcss
+    '@nuxtjs/tailwindcss',
+  ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
-  proxy: {
-    '/api/': { target: "https://us-central1-tosho-card.cloudfunctions.net/", pathRewrite:{'^/api/': ''}}
-  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
