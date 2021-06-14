@@ -55,9 +55,6 @@ export default {
         loginResult: ''
       },
       cardData: {},
-      video: null,
-      canvas: null,
-      context: null,
       dataUrl: '',
       status: 'none',
     }
@@ -140,12 +137,7 @@ export default {
     },
     pauseVideo() {
       this.video.pause();
-      //this.status = 'pause';
     },
-    /*takeSnapshot() {
-      this.pauseVideo();
-      this.dataUrl = this.canvas.toDataURL();
-    },*/
     checkForm(){
       if (this.loginForm.card_id.length != 16){
         this.Validation.loginResult = "IDは16桁です"
