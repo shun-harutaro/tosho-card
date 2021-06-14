@@ -59,10 +59,10 @@ export default {
         loginResult: ''
       },
       cardData: {},
-      video: null,
-      canvas: null,
-      context: null,
-      dataUrl: '',
+      //video: null,
+      //canvas: null,
+      //context: null,
+      //dataUrl: '',
       status: 'none',
     }
   },
@@ -137,10 +137,10 @@ export default {
     pauseVideo() {
       this.video.pause();
       this.status = 'pause';
-      const imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-      let data = imageData.data;
+      /*const imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      let data = imageData.data;*/
       /* 二値化 */
-      const threshold = 200;
+      /*const threshold = 200;
       const getColor = (data, i) => {
         const avg = (data[i] + data[i+1] + data[i+2]) / 3;
         if (threshold < avg) { //threshold < rgbの平均
@@ -154,7 +154,7 @@ export default {
         data[i] = data[i+1] = data[i+2] = color;
       };
       this.context.putImageData(imageData, 0, 0)
-      console.log('a')
+      console.log('a')*/
     },
     takeSnapshot() {
       this.pauseVideo();
