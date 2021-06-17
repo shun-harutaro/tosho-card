@@ -98,17 +98,19 @@ export default {
       requestAnimationFrame(this.render);
     },
     guide() {
+      const c_w = this.canvas.width
+      const c_h = this.canvas.height
       this.context.fillStyle = "black";
-      this.context.fillRect(0,0,this.canvas.width/4, this.canvas.height);
+      this.context.fillRect(0, 0, c_w/4, c_h);
       this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(this.canvas.width/4*3,0,this.canvas.width, this.canvas.height);
+      this.context.fillRect(c_w/4*3, 0, c_w, c_h);
       this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(this.canvas.width/4,0,this.canvas.width/4*2, this.canvas.height/11*5);
+      this.context.fillRect(c_w/4, 0, c_w/4*2, c_h/11*5);
       this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(this.canvas.width/4,this.canvas.height/11*6,this.canvas.width/4*2, this.canvas.height);
+      this.context.fillRect(c_w/4, c_h/11*6, c_w/4*2, c_h);
       this.context.globalAlpha = 0.8
     },
     runOcr() { //スナップショットからテキストを抽出
