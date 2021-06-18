@@ -55,9 +55,6 @@ export default {
         loginResult: ''
       },
       cardData: {},
-      video: null,
-      canvas: null,
-      context: null,
       dataUrl: '',
       status: 'none',
     }
@@ -82,7 +79,6 @@ export default {
           this.canvas.width = canvasContainer.offsetWidth;
           this.canvas.height = parseInt(this.canvas.width * this.video.videoHeight / this.video.videoWidth);
           this.render();
-
         });
         // for iOS
         this.video.setAttribute('autoplay','');
@@ -94,24 +90,44 @@ export default {
       }).catch(error => console.log(error));
     },
     render() {
+      const WIDTH = this.canvas.width;
+      const HEIGHT = this.canvas.height;
       if(this.video.readyState === this.video.HAVE_ENOUGH_DATA){
-        this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height,);
-        this.guide();
+        this.context.drawImage(this.video, 0, 0, WIDTH, HEIGHT);
+        const sourceImageData = this.context.getImageData(0, 0, WIDTH, HEIGHT);
+        const sourceData = sourceImageData.data;
+        const THRESHOLD = 100;
+        const getColor = (sourceData, i) => {
+          const avg = (sourceData[i] + sourceData[i+1] + sourceData[i+2]) / 3;
+          if (THRESHOLD < avg) { //threshold < rgbの平均
+            return 255; //white
+          } else {
+            return 0; //black
+          }
+        };
+        for (let i = 0; i < sourceData.length; i+=4){
+          const color = getColor(sourceData, i);
+          sourceData[i] = sourceData[i+1] = sourceData[i+2] = color;
+        };
+        this.context.putImageData(sourceImageData, 0, 0);
+        //this.guide();
       }
       requestAnimationFrame(this.render);
     },
     guide() {
+      const c_w = this.canvas.width
+      const c_h = this.canvas.height
       this.context.fillStyle = "black";
-      this.context.fillRect(0,0,this.canvas.width/4, this.canvas.height);
+      this.context.fillRect(0, 0, c_w/4, c_h);
       this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(this.canvas.width/4*3,0,this.canvas.width, this.canvas.height);
+      this.context.fillRect(c_w/4*3, 0, c_w, c_h);
       this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(this.canvas.width/4,0,this.canvas.width/4*2, this.canvas.height/11*5);
+      this.context.fillRect(c_w/4, 0, c_w/4*2, c_h/11*5);
       this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(this.canvas.width/4,this.canvas.height/11*6,this.canvas.width/4*2, this.canvas.height);
+      this.context.fillRect(c_w/4, c_h/11*6, c_w/4*2, c_h);
       this.context.globalAlpha = 0.8
     },
     runOcr() { //スナップショットからテキストを抽出
@@ -140,12 +156,7 @@ export default {
     },
     pauseVideo() {
       this.video.pause();
-      //this.status = 'pause';
     },
-    /*takeSnapshot() {
-      this.pauseVideo();
-      this.dataUrl = this.canvas.toDataURL();
-    },*/
     checkForm(){
       if (this.loginForm.card_id.length != 16){
         this.Validation.loginResult = "IDは16桁です"
