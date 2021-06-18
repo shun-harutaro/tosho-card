@@ -79,7 +79,6 @@ export default {
           this.canvas.width = canvasContainer.offsetWidth;
           this.canvas.height = parseInt(this.canvas.width * this.video.videoHeight / this.video.videoWidth);
           this.render();
-
         });
         // for iOS
         this.video.setAttribute('autoplay','');
@@ -91,9 +90,27 @@ export default {
       }).catch(error => console.log(error));
     },
     render() {
+      const WIDTH = this.canvas.width;
+      const HEIGHT = this.canvas.height;
       if(this.video.readyState === this.video.HAVE_ENOUGH_DATA){
-        this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height,);
-        this.guide();
+        this.context.drawImage(this.video, 0, 0, WIDTH, HEIGHT);
+        const sourceImageData = this.context.getImageData(0, 0, WIDTH, HEIGHT);
+        const sourceData = sourceImageData.data;
+        const THRESHOLD = 100;
+        const getColor = (sourceData, i) => {
+          const avg = (sourceData[i] + sourceData[i+1] + sourceData[i+2]) / 3;
+          if (THRESHOLD < avg) { //threshold < rgbの平均
+            return 255; //white
+          } else {
+            return 0; //black
+          }
+        };
+        for (let i = 0; i < sourceData.length; i+=4){
+          const color = getColor(sourceData, i);
+          sourceData[i] = sourceData[i+1] = sourceData[i+2] = color;
+        };
+        this.context.putImageData(sourceImageData, 0, 0);
+        //this.guide();
       }
       requestAnimationFrame(this.render);
     },
