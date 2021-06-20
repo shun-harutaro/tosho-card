@@ -1,21 +1,22 @@
 <template>
   <div>
-    <h1>Hello from App.vue</h1>
-    <p>parent_num: {{ parent_num }}</p>
-    <Scan @my-click='parent_num = $event'/>
+    <Scan @my-click='card_id = $event'/>
+    <Form :value="card_id"/>
   </div>
 </template>
 
 <script>
 import Scan from '~/components/Scan.vue'
+import Form from '~/components/Form.vue'
 export default {
   data() {
     return {
-      parent_num: 100
+      card_id:''
     }
   },
   components: {
-    Scan
+    Scan,
+    Form
   }
 }
 </script>

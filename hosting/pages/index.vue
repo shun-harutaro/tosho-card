@@ -1,25 +1,9 @@
 <template>
   <div id="app" class="px-5">
     <h1 class="text-3xl font-bold p-2">tosho-card</h1>
-    <form class="form" v-on:submit.prevent="checkForm">
-      <ul>
-        <li>
-          <span>ID : </span>
-          <input type="text" v-model="loginForm.card_id" style="width:80%">
-        </li>
-        <li>
-          <span>PIN : </span>
-          <input type="text" maxlength="4" v-model="loginForm.pin">
-        </li>
-        <li>
-          <button>
-            調べる！
-          </button>
-        </li>
-      </ul>
-    </form>
+    
     <div>
-      <p>{{ Validation.loginResult }}</p>
+      
       <p>残額 : {{ cardData.balance }}</p>
       <p>有効期限 : {{ cardData.date }}</p>
     </div>
@@ -38,7 +22,7 @@ export default {
         loginResult: ''
       },
       cardData: {},
-      status: 'none',
+
     }
   },
   
