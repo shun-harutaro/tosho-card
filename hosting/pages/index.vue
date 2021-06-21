@@ -11,7 +11,7 @@ import Form from '~/components/Form.vue'
 export default {
   data() {
     return {
-      card_id:'1054924354380148'
+      card_id:''
     }
   },
   components: {
