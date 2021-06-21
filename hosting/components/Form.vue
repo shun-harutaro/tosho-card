@@ -41,7 +41,7 @@ export default {
 
   methods: {
     checkForm(){
-      if (this.loginForm.card_id.length != 16){
+      if (this.card_id.length != 16){
         this.Validation.loginResult = "IDは16桁です"
       } else {
         this.getCardData()
