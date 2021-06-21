@@ -1,0 +1,16 @@
+#62 form
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Sun Jun 20 18:32:27 2021 +0900
+#
+# On branch dev/#62_organize_hosting
+# Changes to be committed:
+#	modified:   hosting/components/Form.vue
+#	modified:   hosting/pages/index.vue
+#	modified:   hosting/pages/test.vue
+#
+# Changes not staged for commit:
+#	modified:   function/gcf-packs (modified content, untracked content)
+#
