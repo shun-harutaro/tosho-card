@@ -108,7 +108,7 @@ export default {
       this.video.pause();
     },
     send(data) {
-      this.$emit("my-click", data);
+      this.$emit("get-scan", data);
     }
   },
   mounted() {

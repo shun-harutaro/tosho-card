@@ -57,10 +57,14 @@ export default {
         this.cardData = res
         this.Validation.loginResult = ""
         console.log(res)
+        this.send(this.cardData)
       }).catch((err) => {
         console.log(err)
         this.Validation.loginResult = "データ取得失敗";
       });
+    },
+    send(data) {
+      this.$emit("get-card_data", data);
     },
   },
 }
