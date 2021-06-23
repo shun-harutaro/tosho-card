@@ -1,7 +1,6 @@
 <template>
   <div class="w-full h-full fixed inset-0">
     <div class="w-full h-full bg-black bg-opacity-50 modal-wrap relative">
-      <!-- このボタンを押すとカスタムイベントcloseModalが発生 -->
       <div class="bg-white w-2/5 h-40 absolute m-auto inset-0 text-center">
         <p>残額 : {{ card_data.balance }}</p>
         <p>有効期限 : {{ card_data.date }}</p>
