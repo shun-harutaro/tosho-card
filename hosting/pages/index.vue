@@ -3,7 +3,7 @@
     <Scan @get-scan='card_id = $event'/>
     <Form :card_id="card_id" @get-card_data='card_data = $event' />
     <!-- カスタムイベントcloseModalを受け取り、showをfalseにし非表示に。 --->
-    <Modal @closeModal="show = false" v-if="show" :card_data="card_data" />
+    <Modal @closeModal="card_data = ''" v-if="card_data" :card_data="card_data" />
     <button @click="show = true">
       <p>モーダル表示</p>
     </button>
@@ -18,8 +18,10 @@ export default {
   data() {
     return {
       card_id:'',
-      card_data: {},
-      show: false,
+      card_data: {
+        balance: '1000',
+        date: '2020'
+      },
     }
   },
   components: {
