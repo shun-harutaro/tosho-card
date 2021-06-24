@@ -1,7 +1,8 @@
 <template>
   <div class="scan">
+    <h1 class="text-3xl font-bold p-2">tosho-card</h1>
     <div ref="canvas-container">
-      <canvas ref="canvas" style="width:100%;margin:0 auto;"></canvas>
+      <canvas class="w-full max-w-3xl mx-auto" ref="canvas" ></canvas>
     </div>
     <div class="text-center pt-3">
       <div v-if="status=='play'">
