@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="px-5">
     <Scan @get-scan='card_id = $event'/>
     <Form @closeModal="card_id = ''" :card_id="card_id" @get-card_data='card_data = $event' v-if="card_id" />
     <Result @closeModal="card_data = ''" v-if="card_data" :card_data="card_data" />
