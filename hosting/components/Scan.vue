@@ -6,11 +6,15 @@
     </div>
     <div class="text-center pt-3">
       <div v-if="status=='play'">
+        <button @click="takeSnapshot">
+          snapshot
+        </button>
+      </div>
+      <div v-if="status=='pause'">
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded" @click="runOcr">
           ID番号を読み取る
         </button>
       </div>
-      <!-- pause： スナップショットを撮ったので一次停止 -->
       <div v-if="status=='reading'">
         <p>読み取り中...</p>
         <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 ml-1 border border-blue-500 hover:border-transparent rounded" @click="playVideo">
@@ -108,6 +112,11 @@ export default {
     },
     pauseVideo() {
       this.video.pause();
+      this.status = 'pause'
+      //this.binary();
+    },
+    takeSnapshot() {
+      this.pauseVideo();
       this.binary();
     },
     send(data) {
@@ -117,12 +126,15 @@ export default {
       const WIDTH = this.canvas.width;
       const HEIGHT = this.canvas.height;
       if (this.video.readyState === this.video.HAVE_ENOUGH_DATA){
+        console.log('white');
         this.context.drawImage(this.video, 0, 0, WIDTH, HEIGHT);
         const sourceImageData = this.context.getImageData(0, 0, WIDTH, HEIGHT);
         const sourceData = sourceImageData.data
-        const THRESHOLD = 100;
+        console.log(sourceData)
+        const THRESHOLD = 200;
         const getColor = (sourceData, i) => {
           const avg = (sourceData[i] + sourceData[i+1], sourceData[i+2]) / 3;
+          console.log(avg)
           if (THRESHOLD < avg) { //avg: rgbの平均
             return 255; //white
           } else {
