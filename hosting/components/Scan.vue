@@ -81,10 +81,11 @@ export default {
       this.context.fillRect(c_w/4, c_h/11*6, c_w/4*2, c_h);
       this.context.globalAlpha = 0.8
     },
-    runOcr() { //スナップショットからテキストを抽出
+    async runOcr() { //スナップショットからテキストを抽出
       const Tesseract = require('tesseract.js')
       this.status = 'reading';
-      this.pauseVideo();
+      this.pauseVideo()
+      const result = await this.pauseVideo();
       const dataUrl = this.canvas.toDataURL();
       Tesseract.recognize(dataUrl, 'eng', {
         logger: log => {
@@ -107,9 +108,33 @@ export default {
     },
     pauseVideo() {
       this.video.pause();
+      this.binary();
     },
     send(data) {
       this.$emit("get-scan", data);
+    },
+    binary() {
+      const WIDTH = this.canvas.width;
+      const HEIGHT = this.canvas.height;
+      if (this.video.readyState === this.video.HAVE_ENOUGH_DATA){
+        this.context.drawImage(this.video, 0, 0, WIDTH, HEIGHT);
+        const sourceImageData = this.context.getImageData(0, 0, WIDTH, HEIGHT);
+        const sourceData = sourceImageData.data
+        const THRESHOLD = 100;
+        const getColor = (sourceData, i) => {
+          const avg = (sourceData[i] + sourceData[i+1], sourceData[i+2]) / 3;
+          if (THRESHOLD < avg) { //avg: rgbの平均
+            return 255; //white
+          } else {
+            return 0; //black
+          }
+        };
+        for (let i = 0; i < sourceData.length; i+=4){
+          const color = getColor(sourceData, i);
+          sourceData[i] = sourceData[i+1] = sourceData[i+2] = color;
+        };
+        this.context.putImageData(sourceImageData, 0, 0);
+      }
     }
   },
   mounted() {
