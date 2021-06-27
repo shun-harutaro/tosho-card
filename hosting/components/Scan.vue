@@ -3,6 +3,7 @@
     <h1 class="text-3xl font-bold p-2">tosho-card</h1>
     <div ref="canvas-container">
       <canvas class="w-full max-w-3xl mx-auto" ref="canvas" ></canvas>
+      <canvas class="w-full max-w-3xl mx-auto" ref="canvas_hide"></canvas>
     </div>
     <div class="text-center pt-3">
       <div v-if="status=='play'">
@@ -43,13 +44,17 @@ export default {
         }
       }).then(stream => {
         this.canvas = this.$refs.canvas;
+        this.canvasHide = this.$refs.canvas_hide;
         this.context = this.canvas.getContext('2d');
+        this.ctxHide = this.canvasHide.getContext('2d');
 
         this.video = document.createElement('video');
         this.video.addEventListener('loadedmetadata', () => { // メタデータが取得できるようになったら実行
           const canvasContainer = this.$refs['canvas-container'];
           this.canvas.width = canvasContainer.offsetWidth;
           this.canvas.height = parseInt(this.canvas.width * this.video.videoHeight / this.video.videoWidth);
+          this.canvasHide.width = this.canvas.width;
+          this.canvasHide.height = this.canvas.height;
           this.render();
 
         });
@@ -85,11 +90,10 @@ export default {
       this.context.fillRect(c_w/4, c_h/11*6, c_w/4*2, c_h);
       this.context.globalAlpha = 0.8
     },
-    async runOcr() { //スナップショットからテキストを抽出
+    runOcr() { //スナップショットからテキストを抽出
       const Tesseract = require('tesseract.js')
       this.status = 'reading';
-      this.pauseVideo()
-      const result = await this.pauseVideo();
+      this.pauseVideo();
       const dataUrl = this.canvas.toDataURL();
       Tesseract.recognize(dataUrl, 'eng', {
         logger: log => {
@@ -115,9 +119,10 @@ export default {
       this.status = 'pause'
       //this.binary();
     },
-    takeSnapshot() {
+    async takeSnapshot() {
       this.pauseVideo();
-      this.binary();
+      const dst = await this.binary();
+      this.ctxHide.putImageData(dst, 0, 0);
     },
     send(data) {
       this.$emit("get-scan", data);
@@ -126,26 +131,29 @@ export default {
       const WIDTH = this.canvas.width;
       const HEIGHT = this.canvas.height;
       if (this.video.readyState === this.video.HAVE_ENOUGH_DATA){
-        console.log('white');
-        this.context.drawImage(this.video, 0, 0, WIDTH, HEIGHT);
-        const sourceImageData = this.context.getImageData(0, 0, WIDTH, HEIGHT);
-        const sourceData = sourceImageData.data
-        console.log(sourceData)
-        const THRESHOLD = 200;
+        //this.context.drawImage(this.video, 0, 0, WIDTH, HEIGHT);
+        const src = this.context.getImageData(0, 0, WIDTH, HEIGHT);
+        const srcData = src.data;
+        let dst = this.context.createImageData(WIDTH, HEIGHT);
+        let dstData = dst.data;
+        const THRESHOLD = 130;
         const getColor = (sourceData, i) => {
-          const avg = (sourceData[i] + sourceData[i+1], sourceData[i+2]) / 3;
-          console.log(avg)
+          const avg = (sourceData[i] + sourceData[i+1] + sourceData[i+2])/3;
           if (THRESHOLD < avg) { //avg: rgbの平均
             return 255; //white
           } else {
             return 0; //black
           }
         };
-        for (let i = 0; i < sourceData.length; i+=4){
-          const color = getColor(sourceData, i);
-          sourceData[i] = sourceData[i+1] = sourceData[i+2] = color;
+        for (let i = 0; i < srcData.length; i+=4){
+          const color = getColor(srcData, i);
+          dstData[i] = dstData[i+1] = dstData[i+2] = color;
+          dstData[i+3] = srcData[i+3]
         };
-        this.context.putImageData(sourceImageData, 0, 0);
+      console.log(srcData);
+      console.log(dstData);
+      //this.context.putImageData(dst, 0, 0);
+      return dst
       }
     }
   },
