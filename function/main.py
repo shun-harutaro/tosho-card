@@ -1,6 +1,5 @@
 import os
 from selenium import webdriver
-from fake_useragent import UserAgent
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -36,7 +35,6 @@ def handler(request):
     chrome_options.add_argument('--v=99')
     chrome_options.add_argument('--single-process')
     chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument('user-agent='+UserAgent().random)
 
     request_json = request.get_json(silent=True)
     #request_args = request.args # for "GET"
