@@ -3,7 +3,9 @@
     <h1 class="text-3xl font-bold p-2">tosho-card</h1>
     <div ref="canvas-container">
       <canvas class="w-full max-w-3xl mx-auto" ref="canvas" ></canvas>
-      <canvas class="w-full max-w-3xl mx-auto" ref="canvas_hide"></canvas>
+    </div>
+    <div>
+      <canvas class="w-full max-w-3xl mx-auto" ref="canvas_hide" style="display:none"></canvas>
     </div>
     <div class="text-center pt-3">
       <div v-if="status=='play'">
@@ -29,7 +31,8 @@
 export default {
   data() {
     return {
-      status: 'none'
+      status: 'none',
+      hide: false,
     }
   },
 
@@ -77,24 +80,24 @@ export default {
     guide() {
       const c_w = this.canvas.width
       const c_h = this.canvas.height
+      //this.context.fillStyle = "black";
+      //this.context.fillRect(0, 0, c_w/4, c_h);
+      //this.context.globalAlpha = 0.8
+      //this.context.fillStyle = "black";
+      //this.context.fillRect(c_w/4*3, 0, c_w, c_h);
+      //this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(0, 0, c_w/4, c_h);
+      this.context.fillRect(0, 0, c_w, c_h/9*4);
       this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
-      this.context.fillRect(c_w/4*3, 0, c_w, c_h);
-      this.context.globalAlpha = 0.8
-      this.context.fillStyle = "black";
-      this.context.fillRect(c_w/4, 0, c_w/4*2, c_h/11*5);
-      this.context.globalAlpha = 0.8
-      this.context.fillStyle = "black";
-      this.context.fillRect(c_w/4, c_h/11*6, c_w/4*2, c_h);
+      this.context.fillRect(0, c_h/9*5, c_w, c_h);
       this.context.globalAlpha = 0.8
     },
     runOcr() { //スナップショットからテキストを抽出
       const Tesseract = require('tesseract.js')
       this.status = 'reading';
       this.pauseVideo();
-      const dataUrl = this.canvas.toDataURL();
+      const dataUrl = this.canvasHide.toDataURL();
       Tesseract.recognize(dataUrl, 'eng', {
         logger: log => {
           console.log(log);
@@ -136,7 +139,7 @@ export default {
         const srcData = src.data;
         let dst = this.context.createImageData(WIDTH, HEIGHT);
         let dstData = dst.data;
-        const THRESHOLD = 130;
+        const THRESHOLD = 100;
         const getColor = (sourceData, i) => {
           const avg = (sourceData[i] + sourceData[i+1] + sourceData[i+2])/3;
           if (THRESHOLD < avg) { //avg: rgbの平均
