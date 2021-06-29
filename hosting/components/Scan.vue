@@ -8,12 +8,14 @@
       <canvas class="w-full max-w-3xl mx-auto" ref="canvas_hide" style="display:none"></canvas>
     </div>
     <div class="text-center pt-3">
+      <!--
       <div v-if="status=='play'">
         <button @click="takeSnapshot">
           snapshot
         </button>
       </div>
-      <div v-if="status=='pause'">
+      -->
+      <div v-if="status=='play'">
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded" @click="runOcr">
           ID番号を読み取る
         </button>
@@ -90,6 +92,7 @@ export default {
       const Tesseract = require('tesseract.js')
       this.status = 'reading';
       this.pauseVideo();
+      
       const dataUrl = this.canvasHide.toDataURL();
       Tesseract.recognize(dataUrl, 'eng', {
         logger: log => {
@@ -113,11 +116,12 @@ export default {
     pauseVideo() {
       this.video.pause();
       this.status = 'pause'
-    },
-    takeSnapshot() {
-      this.pauseVideo();
       this.binary();
     },
+    /*takeSnapshot() {
+      this.pauseVideo();
+      this.binary();
+    },*/
     send(data) {
       this.$emit("get-scan", data);
     },
@@ -129,7 +133,7 @@ export default {
         const srcData = src.data;
         let dst = this.context.createImageData(WIDTH, HEIGHT);
         let dstData = dst.data;
-        const THRESHOLD = 100;
+        const THRESHOLD = 140;
         const getColor = (sourceData, i) => {
           const avg = (sourceData[i] + sourceData[i+1] + sourceData[i+2])/3;
           if (THRESHOLD < avg) { //avg: rgbの平均
