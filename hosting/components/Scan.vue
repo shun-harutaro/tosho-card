@@ -8,13 +8,6 @@
       <canvas class="w-full max-w-3xl mx-auto" ref="canvas_hide" style="display:none"></canvas>
     </div>
     <div class="text-center pt-3">
-      <!--
-      <div v-if="status=='play'">
-        <button @click="takeSnapshot">
-          snapshot
-        </button>
-      </div>
-      -->
       <div v-if="status=='play'">
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded" @click="runOcr">
           ID番号を読み取る
@@ -118,10 +111,6 @@ export default {
       this.status = 'pause'
       this.binary();
     },
-    /*takeSnapshot() {
-      this.pauseVideo();
-      this.binary();
-    },*/
     send(data) {
       this.$emit("get-scan", data);
     },
