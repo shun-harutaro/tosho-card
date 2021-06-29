@@ -32,7 +32,6 @@ export default {
   data() {
     return {
       status: 'none',
-      hide: false,
     }
   },
 
@@ -80,12 +79,6 @@ export default {
     guide() {
       const c_w = this.canvas.width
       const c_h = this.canvas.height
-      //this.context.fillStyle = "black";
-      //this.context.fillRect(0, 0, c_w/4, c_h);
-      //this.context.globalAlpha = 0.8
-      //this.context.fillStyle = "black";
-      //this.context.fillRect(c_w/4*3, 0, c_w, c_h);
-      //this.context.globalAlpha = 0.8
       this.context.fillStyle = "black";
       this.context.fillRect(0, 0, c_w, c_h/9*4);
       this.context.globalAlpha = 0.8
@@ -120,12 +113,10 @@ export default {
     pauseVideo() {
       this.video.pause();
       this.status = 'pause'
-      //this.binary();
     },
-    async takeSnapshot() {
+    takeSnapshot() {
       this.pauseVideo();
-      const dst = await this.binary();
-      this.ctxHide.putImageData(dst, 0, 0);
+      this.binary();
     },
     send(data) {
       this.$emit("get-scan", data);
@@ -134,7 +125,6 @@ export default {
       const WIDTH = this.canvas.width;
       const HEIGHT = this.canvas.height;
       if (this.video.readyState === this.video.HAVE_ENOUGH_DATA){
-        //this.context.drawImage(this.video, 0, 0, WIDTH, HEIGHT);
         const src = this.context.getImageData(0, 0, WIDTH, HEIGHT);
         const srcData = src.data;
         let dst = this.context.createImageData(WIDTH, HEIGHT);
@@ -155,8 +145,7 @@ export default {
         };
       console.log(srcData);
       console.log(dstData);
-      //this.context.putImageData(dst, 0, 0);
-      return dst
+      this.ctxHide.putImageData(dst, 0, 0);
       }
     }
   },
