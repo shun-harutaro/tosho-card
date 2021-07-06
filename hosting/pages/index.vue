@@ -13,7 +13,7 @@ import Result from '~/components/Result.vue'
 export default {
   data() {
     return {
-      card_id:'xxxxxxxxxxxxxxx',
+      card_id:'1054924354380148',
       card_data: false,
     }
   },
