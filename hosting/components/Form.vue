@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full fixed inset-0">
     <div class="w-full h-full bg-black bg-opacity-50 modal-wrap relative">
-      <div class="bg-white w-2/5 h-40 absolute m-auto inset-0 text-center">
+      <div class="bg-white w-4/5 h-1/4 absolute m-auto inset-0 text-center">
         <form class="form_cotent" v-on:submit.prevent="checkForm">
           <ul>
             <li>
@@ -15,15 +15,15 @@
             <li>
               <p>{{ Validation.loginResult }}</p>
               <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-2 rounded my-1"
               >
-                調べる！
+                調べる
               </button>
             </li>
           </ul>
         </form>
         <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded"
+            class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white px-8 py-2 rounded ml-1 border border-blue-500 "
             @click="$emit('closeModal')"
         >
           閉じる
