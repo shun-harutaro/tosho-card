@@ -1,33 +1,55 @@
 <template>
   <div class="w-full h-full fixed inset-0">
     <div class="w-full h-full bg-black bg-opacity-50 modal-wrap relative">
-      <div class="bg-white w-2/5 h-40 absolute m-auto inset-0 text-center">
-        <form class="form_cotent" v-on:submit.prevent="checkForm">
-          <ul>
-            <li>
-              <span>ID : </span>
-              {{ card_id }}
-            </li>
-            <li>
-              <span>PIN : </span>
-              <input type="text" maxlength="4" v-model="loginForm.pin" />
-            </li>
-            <li>
-              <p>{{ Validation.loginResult }}</p>
-              <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded"
-              >
-                調べる！
-              </button>
-            </li>
-          </ul>
-        </form>
-        <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded"
+      <div class="bg-white w-4/5 h-1/4 absolute m-auto inset-0 text-center flex items-center justify-center">
+        <div class="modal-content">
+          <form class="form_cotent" v-on:submit.prevent="checkForm">
+            <ul>
+              <li>
+                <span>ID : </span>
+                {{ card_id }}
+              </li>
+              <li>
+                <span>PIN : </span>
+                <input type="text" maxlength="4" v-model="loginForm.pin" class="w-20 border rounded"/>
+              </li>
+              <li>
+                <p>{{ Validation.loginResult }}</p>
+                <button
+                  class="
+                    bg-blue-500
+                    hover:bg-blue-700
+                    text-white
+                    font-bold
+                    px-8
+                    py-2
+                    rounded
+                    my-1
+                  "
+                >
+                  調べる
+                </button>
+              </li>
+            </ul>
+          </form>
+          <button
+            class="
+              bg-transparent
+              hover:bg-blue-500
+              text-blue-700
+              font-semibold
+              hover:text-white
+              px-8
+              py-2
+              rounded
+              ml-1
+              border border-blue-500
+            "
             @click="$emit('closeModal')"
-        >
-          閉じる
-        </button>
+          >
+            閉じる
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -71,7 +93,7 @@ export default {
           this.Validation.loginResult = "";
           console.log(res);
           this.send(this.cardData);
-          this.$emit('closeModal')
+          this.$emit("closeModal");
         })
         .catch((err) => {
           console.log(err);
