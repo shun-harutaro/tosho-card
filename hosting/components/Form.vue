@@ -11,7 +11,7 @@
               </li>
               <li>
                 <span>PIN : </span>
-                <input type="text" maxlength="4" v-model="loginForm.pin" />
+                <input type="text" maxlength="4" v-model="loginForm.pin" class="w-20 border rounded"/>
               </li>
               <li>
                 <p>{{ Validation.loginResult }}</p>
