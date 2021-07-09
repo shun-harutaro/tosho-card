@@ -50,16 +50,14 @@
             閉じる
           </button>
         </div>
-        <div class="loading" v-else>
-          <!-- TODO:loading animation -->
-          <p class="text-5xl">データ取得中</p>
-        </div>
+        <Loading v-else/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Loading from '~/components/Loading.vue'
 export default {
   data() {
     return {
@@ -72,6 +70,10 @@ export default {
       },
       cardData: {},
     };
+  },
+
+  components:{
+    Loading
   },
 
   props: {
