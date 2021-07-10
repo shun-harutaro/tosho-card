@@ -14,6 +14,7 @@
         </button>
       </div>
       <div v-if="status=='reading'">
+        <Loading />
         <p>読み取り中...</p>
         <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 ml-1 border border-blue-500 hover:border-transparent rounded" @click="playVideo">
          戻る
@@ -23,7 +24,9 @@
   </div>
 </template>
 <script>
+import Loading from '~/components/Loading.vue'
 export default {
+  components: { Loading },
   data() {
     return {
       status: 'none',
@@ -108,7 +111,6 @@ export default {
     },
     pauseVideo() {
       this.video.pause();
-      this.status = 'pause'
       this.binary();
     },
     send(data) {
