@@ -1,6 +1,7 @@
 <template>
   <div class="scan">
     <h1 class="text-3xl font-bold p-2">tosho-card</h1>
+    <div>
     <div ref="canvas-container">
       <canvas class="w-full max-w-3xl mx-auto" ref="canvas" ></canvas>
     </div>
@@ -8,19 +9,19 @@
       <canvas class="w-full max-w-3xl mx-auto" ref="canvas_hide" style="display:none"></canvas>
     </div>
     <div class="text-center pt-3">
-      <div v-if="status=='play'">
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded" @click="runOcr">
           ID番号を読み取る
         </button>
-      </div>
-      <div v-if="status=='reading'">
+    </div>
+    </div>
+      <div v-if="status=='reading'" class="text-center pt-3">
         <Loading />
         <p>読み取り中...</p>
         <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 ml-1 border border-blue-500 hover:border-transparent rounded" @click="playVideo">
          戻る
         </button>
       </div>
-    </div>
+    
   </div>
 </template>
 <script>
