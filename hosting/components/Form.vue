@@ -2,7 +2,7 @@
   <div class="w-full h-full fixed inset-0">
     <div class="w-full h-full bg-black bg-opacity-50 modal-wrap relative">
       <div class="bg-white w-4/5 h-1/4 absolute m-auto inset-0 text-center flex items-center justify-center">
-        <div class="modal-content">
+        <div class="modal-content" v-if="showForm">
           <form class="form_cotent" v-on:submit.prevent="checkForm">
             <ul>
               <li>
@@ -50,15 +50,21 @@
             閉じる
           </button>
         </div>
+        <div class="loading" v-else>
+          <Loading />
+          <p>データ取得中</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Loading from '~/components/Loading.vue'
 export default {
   data() {
     return {
+      showForm: true,
       loginForm: {
         pin: "",
       },
@@ -67,6 +73,10 @@ export default {
       },
       cardData: {},
     };
+  },
+
+  components:{
+    Loading
   },
 
   props: {
@@ -82,7 +92,8 @@ export default {
       }
     },
     async getCardData() {
-      this.Validation.loginResult = "データ取得中...";
+      //this.Validation.loginResult = "データ取得中...";
+      this.showForm = false;
       const carddata = await this.$axios
         .$post(this.$config.baseURL, {
           id: this.card_id,
@@ -98,6 +109,7 @@ export default {
         .catch((err) => {
           console.log(err);
           this.Validation.loginResult = "データ取得失敗";
+          this.showForm = true;
           this.error = true;
         });
     },
