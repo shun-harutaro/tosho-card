@@ -63,7 +63,7 @@ export default {
   components: { Loading },
   data() {
     return {
-      status: 'reading',
+      status: 'none',
     };
   },
 
