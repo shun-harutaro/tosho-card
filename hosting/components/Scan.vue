@@ -29,27 +29,29 @@
     </div>
     <div v-if="status == 'reading'" class="text-center pt-3 w-full h-full fixed inset-0">
       <div class="w-full h-full bg-black bg-opacity-50 modal-wrap relative">
-        <div class="bg-white w-4/5 h-1/4 absolute m-auto inset-0 text-center flex items-center justify-center">
-          <Loading />
-          <p>読み取り中...</p>
-          <button
-            class="
-              bg-transparent
-              hover:bg-blue-500
-              text-blue-700
-              font-semibold
-              hover:text-white
-              py-2
-              px-4
-              ml-1
-              border border-blue-500
-              hover:border-transparent
-              rounded
-            "
-            @click="playVideo"
-          >
-            戻る
-          </button>
+        <div class="bg-white w-4/5 h-1/3 absolute m-auto inset-0 text-center flex, item-center, justify-center">
+          <div>
+            <Loading />
+            <p>読み取り中...</p>
+            <button
+              class="
+                bg-transparent
+                hover:bg-blue-500
+                text-blue-700
+                font-semibold
+                hover:text-white
+                py-2
+                px-4
+                ml-1
+                border border-blue-500
+                hover:border-transparent
+                rounded
+              "
+              @click="playVideo"
+            >
+              戻る
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -61,7 +63,7 @@ export default {
   components: { Loading },
   data() {
     return {
-      status: "none",
+      status: 'reading',
     };
   },
 

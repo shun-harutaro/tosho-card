@@ -50,7 +50,10 @@
             閉じる
           </button>
         </div>
-        <Loading v-else/>
+        <div class="loading" v-else>
+          <Loading />
+          <p>データ取得中</p>
+        </div>
       </div>
     </div>
   </div>
