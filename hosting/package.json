@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
-    "core-js": "^3.20.3",
+    "core-js": "^3.21.1",
     "nuxt": "^2.2.0",
     "tesseract.js": "^2.1.5"
   },
