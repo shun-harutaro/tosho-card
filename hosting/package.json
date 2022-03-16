@@ -18,7 +18,7 @@
     "tesseract.js": "^2.1.5"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^4.2.1",
+    "@nuxtjs/tailwindcss": "^5.0.2",
     "postcss": "^8.3.0"
   }
 }
