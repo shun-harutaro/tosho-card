@@ -14,7 +14,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
     "core-js": "^3.23.4",
-    "nuxt": "^2.2.0",
+    "nuxt": "^3.1.1",
     "tesseract.js": "^2.1.5"
   },
   "devDependencies": {
